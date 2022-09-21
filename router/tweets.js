@@ -32,7 +32,7 @@ const tweetsRouter = express.Router();
 /** GET tweets
  *
  */
-tweetsRouter.get("/", (req, res, next) => {
+tweetsRouter.get("/", (req, res) => {
   const username = req.query.username;
   const data = username
     ? tweets.filter((tweet) => tweet.username === username)
@@ -40,10 +40,10 @@ tweetsRouter.get("/", (req, res, next) => {
   res.status(200).json(data);
 });
 
-/** Get tweet by tweet id
+/** GET tweet by tweet id
  *
  */
-tweetsRouter.get("/:id", (req, res, next) => {
+tweetsRouter.get("/:id", (req, res) => {
   const id = req.params.id;
   const data = tweets.find((tweet) => tweet.id === id);
   if (data) {
@@ -53,10 +53,10 @@ tweetsRouter.get("/:id", (req, res, next) => {
   }
 });
 
-/** Post tweet
+/** POST tweet
  *
  */
-tweetsRouter.post("/", (req, res, next) => {
+tweetsRouter.post("/", (req, res) => {
   const { text, name, username } = req.body;
   const tweet = {
     id: Date.now().toString(),
@@ -69,7 +69,7 @@ tweetsRouter.post("/", (req, res, next) => {
   res.status(201).json(tweet);
 });
 
-/** Delete tweet
+/** DELETE tweet
  *
  */
 tweetsRouter.delete("/:id", (req, res, next) => {
@@ -79,6 +79,9 @@ tweetsRouter.delete("/:id", (req, res, next) => {
   res.sendStatus(204);
 });
 
+/** PUT tweet
+ *
+ */
 tweetsRouter.put("/:id", (req, res, next) => {
   const id = req.params.id;
   const newText = req.body.text;
