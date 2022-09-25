@@ -59,7 +59,7 @@ tweetsRouter.get("/:id", (req, res) => {
 tweetsRouter.post("/", (req, res) => {
   const { text, name, username } = req.body;
   const tweet = {
-    id: Date.now(),
+    id: Date.now().toString(),
     text,
     createdAt: new Date(),
     name,
