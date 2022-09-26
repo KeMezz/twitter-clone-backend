@@ -74,9 +74,12 @@ tweetsRouter.post("/", (req, res) => {
  */
 tweetsRouter.delete("/:id", (req, res, next) => {
   const id = req.params.id;
-  tweets = tweets.filter((tweet) => tweet.id !== id);
-
-  res.sendStatus(204);
+  if (tweets.find((tweet) => tweet.id === id)) {
+    tweets = tweets.filter((tweet) => tweet.id !== id);
+    res.sendStatus(204);
+  } else {
+    res.status(404).json({ message: `요청하신 트윗을 찾을 수 없습니다.` });
+  }
 });
 
 /** PUT tweet
@@ -91,7 +94,7 @@ tweetsRouter.put("/:id", (req, res, next) => {
     tweet.text = newText;
     res.status(200).json(tweet);
   } else {
-    res.status(404).json({ message: `Tweet ${id} Not Found` });
+    res.status(404).json({ message: `요청하신 트윗을 찾을 수 없습니다.` });
   }
 });
 
