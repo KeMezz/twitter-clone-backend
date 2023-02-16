@@ -15,10 +15,21 @@ const tweets = [
     text: "진짜 신기하다!!",
     createdAt: "2023-02-15T07:06:02.544Z",
   },
+  {
+    id: 1676444762544,
+    username: "hyeongjin",
+    text: "진짜 신기하다!!",
+    createdAt: "2023-02-15T07:06:02.544Z",
+  },
 ];
 
-tweetsRouter.get("/", (req, res, next) => {
-  res.send(tweets);
+tweetsRouter.get("/", (req, res) => {
+  const username = req.query?.username;
+  if (username) {
+    res.status(200).send(tweets.filter((tweet) => tweet.username === username));
+  } else {
+    res.status(200).send(tweets);
+  }
 });
 
 export default tweetsRouter;
