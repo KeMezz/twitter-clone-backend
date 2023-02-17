@@ -44,7 +44,7 @@ tweetRouter.put("/", (req, res) => {
 });
 
 tweetRouter.delete("/", (req, res) => {
-  const id = req.query?.id?.toString();
+  const id = req.body?.id?.toString();
   const targetIndex = tweets.findIndex((tweet) => tweet.id.toString() === id);
 
   if (!id) {
