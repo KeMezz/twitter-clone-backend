@@ -1,5 +1,5 @@
 import express from "express";
-import { tweets } from "../stores/tweets";
+import { tweets } from "../stores/tweets.js";
 
 const tweetsRouter = express.Router();
 
