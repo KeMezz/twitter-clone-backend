@@ -12,7 +12,7 @@ export const tweets = [
     createdAt: "2023-02-15T07:06:02.544Z",
   },
   {
-    id: 1676444762544,
+    id: 1676444762546,
     username: "hyeongjin",
     text: "진짜 신기하다!!",
     createdAt: "2023-02-15T07:06:02.544Z",
