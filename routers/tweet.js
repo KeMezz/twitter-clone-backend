@@ -53,7 +53,7 @@ tweetRouter.delete("/", (req, res) => {
     return res.status(404).send("Requested tweet id is not exists");
   } else {
     tweets.splice(targetIndex, 1);
-    return res.status(200).send(tweets);
+    return res.status(204).send(tweets);
   }
 });
 
