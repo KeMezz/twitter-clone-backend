@@ -15,7 +15,7 @@ tweetRouter.post("/", (req, res) => {
   if (!username || !text) {
     return res.sendStatus(400);
   } else {
-    tweets.push(newTweet);
+    tweets.splice(0, 0, newTweet);
     return res.status(201).send(tweets);
   }
 });
@@ -44,7 +44,7 @@ tweetRouter.put("/", (req, res) => {
 });
 
 tweetRouter.delete("/", (req, res) => {
-  const id = req.body?.id?.toString();
+  const id = req.query?.id?.toString();
   const targetIndex = tweets.findIndex((tweet) => tweet.id.toString() === id);
 
   if (!id) {
