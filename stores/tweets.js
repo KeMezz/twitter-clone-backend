@@ -1,7 +1,7 @@
 export const tweets = [
   {
     id: 1676444678643,
-    username: "Bob",
+    username: "bob",
     text: "안녕 반가워 :)",
     createdAt: "2023-02-15T07:04:38.643Z",
   },
@@ -14,7 +14,7 @@ export const tweets = [
   {
     id: 1676444762546,
     username: "hyeongjin",
-    text: "진짜 신기하다!!",
+    text: "이게 뭔데??",
     createdAt: "2023-02-15T07:06:02.544Z",
   },
 ];
