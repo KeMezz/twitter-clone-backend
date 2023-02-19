@@ -6,15 +6,18 @@ const tweetRouter = express.Router();
 tweetRouter.post("/", (req, res) => {
   const username = req.body?.username;
   const text = req.body?.text;
-  const newTweet = {
-    id: Date.now(),
-    username,
-    text,
-    createdAt: new Date().toISOString(),
-  };
+
   if (!username || !text) {
-    return res.sendStatus(400);
+    return res
+      .status(404)
+      .send("Can't find username or text in your request (need both)");
   } else {
+    const newTweet = {
+      id: Date.now(),
+      username,
+      text,
+      createdAt: new Date().toISOString(),
+    };
     tweets.splice(0, 0, newTweet);
     return res.status(201).send(tweets);
   }
@@ -28,9 +31,7 @@ tweetRouter.put("/", (req, res) => {
   if (!id || !text) {
     return res
       .status(400)
-      .send(
-        "can't find tweet id or new tweet text in your request (need both)"
-      );
+      .send("Can't find tweet id or text in your request (need both)");
   } else if (targetIndex < 0) {
     return res.status(404).send("Requested tweet id is not exists");
   } else {
@@ -48,7 +49,7 @@ tweetRouter.delete("/", (req, res) => {
   const targetIndex = tweets.findIndex((tweet) => tweet.id.toString() === id);
 
   if (!id) {
-    return res.status(400).send("can't find tweet id in your request");
+    return res.status(400).send("Can't find tweet id in your request");
   } else if (targetIndex < 0) {
     return res.status(404).send("Requested tweet id is not exists");
   } else {
