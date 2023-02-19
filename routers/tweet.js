@@ -3,6 +3,15 @@ import { tweets } from "../stores/tweets.js";
 
 const tweetRouter = express.Router();
 
+tweetRouter.get("/", (req, res) => {
+  const username = req.query?.username;
+  if (username) {
+    res.status(200).send(tweets.filter((tweet) => tweet.username === username));
+  } else {
+    res.status(200).send(tweets);
+  }
+});
+
 tweetRouter.post("/", (req, res) => {
   const username = req.body?.username;
   const text = req.body?.text;
