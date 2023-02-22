@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
-import "express-async-errors";
 import tweetRouter from "./routers/tweet.js";
+import "express-async-errors";
 
 const app = express();
 
@@ -23,10 +23,10 @@ app.use(
 app.use("/tweet", tweetRouter);
 
 // error handlers
-app.use((req, res, next) => {
+app.use((_, res) => {
   res.sendStatus(404);
 });
-app.use((error, req, res, next) => {
+app.use((error, _, res) => {
   console.error(error);
   res.sendStatus(500);
 });
