@@ -19,16 +19,16 @@ export const tweets = [
   },
 ];
 
-export const getAll = () => {
+export const getAll = async () => {
   return tweets;
 };
-export const getAllByUsername = (username) => {
+export const getAllByUsername = async (username) => {
   return tweets.filter((tweet) => tweet.username === username);
 };
-export const getById = (id) => {
+export const getById = async (id) => {
   return tweets.find((tweet) => tweet.id.toString() === id.toString());
 };
-export const create = (username, text) => {
+export const create = async (username, text) => {
   if (!username || !text) {
     return undefined;
   }
@@ -41,7 +41,7 @@ export const create = (username, text) => {
   tweets.splice(0, 0, newTweet);
   return newTweet;
 };
-export const update = (id, text) => {
+export const update = async (id, text) => {
   const targetIndex = tweets.findIndex((tweet) => tweet.id.toString() === id);
   if (targetIndex < 0) {
     return undefined;
@@ -54,7 +54,7 @@ export const update = (id, text) => {
     return newTweet;
   }
 };
-export const remove = (id) => {
+export const remove = async (id) => {
   const targetIndex = tweets.findIndex((tweet) => tweet.id.toString() === id);
   if (targetIndex < 0) {
     return undefined;

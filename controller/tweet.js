@@ -1,17 +1,17 @@
 import * as tweetRepository from "../data/tweet.js";
 
-export const getTweets = (req, res) => {
+export const getTweets = async (req, res) => {
   const username = req.query?.username;
   if (username) {
-    res.status(200).send(tweetRepository.getAllByUsername(username));
+    res.status(200).send(await tweetRepository.getAllByUsername(username));
   } else {
-    res.status(200).send(tweetRepository.getAll());
+    res.status(200).send(await tweetRepository.getAll());
   }
 };
 
-export const getTweet = (req, res) => {
+export const getTweet = async (req, res) => {
   const id = req.params.id;
-  const tweet = tweetRepository.getById(id);
+  const tweet = await tweetRepository.getById(id);
   if (tweet) {
     res.status(200).send(tweet);
   } else {
@@ -19,10 +19,10 @@ export const getTweet = (req, res) => {
   }
 };
 
-export const createTweet = (req, res) => {
+export const createTweet = async (req, res) => {
   const username = req.body?.username;
   const text = req.body?.text;
-  const tweet = tweetRepository.create(username, text);
+  const tweet = await tweetRepository.create(username, text);
   if (tweet) {
     res.status(201).send(tweet);
   } else {
@@ -30,20 +30,20 @@ export const createTweet = (req, res) => {
   }
 };
 
-export const updateTweet = (req, res) => {
+export const updateTweet = async (req, res) => {
   const id = req.body?.id?.toString();
   const text = req.body?.text;
-  const tweet = tweetRepository.update(id, text);
+  const tweet = await tweetRepository.update(id, text);
   if (tweet) {
-    res.status(201).send(tweetRepository.update(id, text));
+    res.status(201).send(await tweetRepository.update(id, text));
   } else {
     res.status(404).send(`tweet id ${id} not found`);
   }
 };
 
-export const removeTweet = (req, res) => {
+export const removeTweet = async (req, res) => {
   const id = req.body?.id?.toString();
-  const tweets = tweetRepository.remove(id);
+  const tweets = await tweetRepository.remove(id);
   if (tweets) {
     res.status(204).send(tweets);
   } else {
