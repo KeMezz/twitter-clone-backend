@@ -1,6 +1,5 @@
 import express from "express";
-import { tweets } from "../data/tweets.js";
-import * as tweetRepository from "../data/tweets.js";
+import * as tweetRepository from "../data/tweet.js";
 
 const tweetRouter = express.Router();
 
