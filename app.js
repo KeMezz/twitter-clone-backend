@@ -4,6 +4,7 @@ import morgan from "morgan";
 import helmet from "helmet";
 import tweetRouter from "./routers/tweet.js";
 import "express-async-errors";
+import authRouter from "./routers/auth.js";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(
 
 // routers
 app.use("/tweet", tweetRouter);
+app.use("/auth", authRouter);
 
 // error handlers
 app.use((_, res) => {
