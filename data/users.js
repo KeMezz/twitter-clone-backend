@@ -26,3 +26,7 @@ export const create = async (newUser) => {
 export const findByUsername = async (username) => {
   return users.find((user) => user.username === username);
 };
+
+export const findById = async (id) => {
+  return users.find((user) => user.id === id);
+};
