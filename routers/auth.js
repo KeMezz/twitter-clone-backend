@@ -1,5 +1,6 @@
 import express from "express";
 import * as authController from "../controller/auth.js";
+import { isAuth } from "../middleware/auth.js";
 import {
   findErrors,
   validateBodyUsername,
@@ -19,16 +20,6 @@ authRouter.post(
   [validateBodyUsername, validatePassword, findErrors],
   authController.login
 );
-
-// authRouter.post("/me", (req, res, next) => {
-//   const { token } = req.body;
-//   jwt.verify(token, secret, (error) => {
-//     if (error) {
-//       return res.sendStatus(404);
-//     } else {
-//       return res.sendStatus(200);
-//     }
-//   });
-// });
+authRouter.get("/me", isAuth, authController.me);
 
 export default authRouter;

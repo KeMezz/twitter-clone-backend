@@ -2,7 +2,7 @@ import * as usersRepository from "../data/users.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-const secretKey = "Vw-fxufR8zoFK-iYVsyzHbXMo2pk_pr!";
+export const secretKey = "Vw-fxufR8zoFK-iYVsyzHbXMo2pk_pr!";
 const jwtExpiresInDays = "2d";
 const bcryptSaltRounds = 12;
 
@@ -34,6 +34,14 @@ export const login = async (req, res) => {
   }
   const token = createJwtToken(user.id);
   res.status(200).json({ token, username });
+};
+
+export const me = async (req, res) => {
+  const user = await usersRepository.findById(req.userId);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  res.status(200).json({ token: req.token, username: user.username });
 };
 
 const createJwtToken = (id) => {
