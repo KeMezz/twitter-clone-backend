@@ -11,7 +11,7 @@ export const findErrors = (req, res, next) => {
 
 export const validateBodyUsername = body("username")
   .trim()
-  .exists()
+  .isLength({ min: 4 })
   .withMessage("username을 입력해주세요.");
 
 export const validateBodyText = body("text")
@@ -22,3 +22,12 @@ export const validateBodyText = body("text")
 export const validateBodyId = body("id")
   .isNumeric()
   .withMessage("id 형식이 올바르지 않습니다.");
+
+export const validatePassword = body("password")
+  .isLength({ min: 5 })
+  .withMessage("Password too short.");
+
+export const validateUrl = body("url")
+  .isURL()
+  .withMessage("invalid URL")
+  .optional({ nullable: true, checkFalsy: true });
