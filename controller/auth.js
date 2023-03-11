@@ -19,7 +19,7 @@ export const signup = async (req, res) => {
     url,
   });
   const token = createJwtToken(userId);
-  return res.status(201).json({ token, username });
+  res.status(201).json({ token, username });
 };
 
 export const login = async (req, res) => {
