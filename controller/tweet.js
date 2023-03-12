@@ -1,16 +1,16 @@
 import * as tweetRepository from "../data/tweet.js";
 
 export const getTweets = async (req, res) => {
-  const username = req.query?.username;
-  if (username) {
-    res.status(200).send(await tweetRepository.getAllByUsername(username));
+  const { userId } = req.query;
+  if (userId) {
+    res.status(200).send(await tweetRepository.getAllByUserId(userId));
   } else {
     res.status(200).send(await tweetRepository.getAll());
   }
 };
 
 export const getTweet = async (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
   const tweet = await tweetRepository.getById(id);
   if (tweet) {
     res.status(200).send(tweet);
@@ -20,9 +20,8 @@ export const getTweet = async (req, res) => {
 };
 
 export const createTweet = async (req, res) => {
-  const username = req.body?.username;
-  const text = req.body?.text;
-  const tweet = await tweetRepository.create(username, text);
+  const { userId, text } = req.body;
+  const tweet = await tweetRepository.create(userId, text);
   if (tweet) {
     res.status(201).send(tweet);
   } else {
@@ -31,8 +30,7 @@ export const createTweet = async (req, res) => {
 };
 
 export const updateTweet = async (req, res) => {
-  const id = req.body?.id?.toString();
-  const text = req.body?.text;
+  const { id, text } = req.body;
   const tweet = await tweetRepository.update(id, text);
   if (tweet) {
     res.status(201).send(await tweetRepository.update(id, text));
@@ -42,7 +40,7 @@ export const updateTweet = async (req, res) => {
 };
 
 export const removeTweet = async (req, res) => {
-  const id = req.body?.id?.toString();
+  const { id } = req.body;
   const tweets = await tweetRepository.remove(id);
   if (tweets) {
     res.status(204).send(tweets);

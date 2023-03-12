@@ -1,3 +1,5 @@
+import * as userRepository from "./users.js";
+
 export const tweets = [
   {
     id: 1676444678643,
@@ -20,44 +22,63 @@ export const tweets = [
 ];
 
 export const getAll = async () => {
-  return tweets;
+  return Promise.all(
+    tweets.map(async (tweet) => {
+      const user = await userRepository.findById(tweet.userId);
+      if (!user) {
+        return null;
+      }
+      return { ...tweet, ...user };
+    })
+  );
 };
-export const getAllByUsername = async (username) => {
-  return tweets.filter((tweet) => tweet.username === username);
+
+export const getAllByUserId = async (userId) => {
+  return getAll().then((tweets) =>
+    tweets.filter((tweet) => tweet.userId === userId)
+  );
 };
+
 export const getById = async (id) => {
-  return tweets.find((tweet) => tweet.id.toString() === id.toString());
-};
-export const create = async (username, text) => {
-  if (!username || !text) {
-    return undefined;
+  const found = tweets.find((tweet) => tweet.id === id);
+  if (!found) {
+    return null;
   }
+  const user = await userRepository.findById(found.userId);
+  if (!user) {
+    return null;
+  }
+  return { ...found, ...user };
+};
+
+export const create = async (userId, text) => {
   const newTweet = {
     id: Date.now(),
-    username,
     text,
     createdAt: new Date().toISOString(),
+    userId,
   };
   tweets.splice(0, 0, newTweet);
-  return newTweet;
+  return getById(newTweet.id);
 };
+
 export const update = async (id, text) => {
   const targetIndex = tweets.findIndex((tweet) => tweet.id.toString() === id);
   if (targetIndex < 0) {
-    return undefined;
+    return null;
   } else {
     const newTweet = {
       ...tweets.find((tweet) => tweet.id.toString() === id),
       text,
     };
     tweets.splice(targetIndex, 1, newTweet);
-    return newTweet;
+    return getById(newTweet.id);
   }
 };
 export const remove = async (id) => {
   const targetIndex = tweets.findIndex((tweet) => tweet.id.toString() === id);
   if (targetIndex < 0) {
-    return undefined;
+    return null;
   } else {
     tweets.splice(targetIndex, 1);
     return tweets;
