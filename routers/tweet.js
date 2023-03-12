@@ -3,9 +3,10 @@ import * as tweetController from "../controller/tweet.js";
 import { isAuth } from "../middleware/auth.js";
 import {
   findErrors,
-  validateBodyId,
-  validateBodyText,
-  validateBodyUsername,
+  validateId,
+  validateText,
+  validateUserId,
+  validateUsername,
 } from "../middleware/validator.js";
 
 const tweetRouter = express.Router();
@@ -15,19 +16,19 @@ tweetRouter.get("/:id", isAuth, tweetController.getTweet);
 tweetRouter.post(
   "/",
   isAuth,
-  [validateBodyText, validateBodyUsername, findErrors],
+  [validateText, validateUserId, findErrors],
   tweetController.createTweet
 );
 tweetRouter.put(
   "/",
   isAuth,
-  [validateBodyId, validateBodyText, validateBodyUsername, findErrors],
+  [validateId, validateText, findErrors],
   tweetController.updateTweet
 );
 tweetRouter.delete(
   "/",
   isAuth,
-  [validateBodyId, findErrors],
+  [validateId, findErrors],
   tweetController.removeTweet
 );
 
