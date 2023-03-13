@@ -2,19 +2,19 @@ import * as userRepository from "./users.js";
 
 export const tweets = [
   {
-    id: 1676444678643,
+    id: "1676444678643",
     text: "안녕 반가워 :)",
     createdAt: "2023-02-15T07:04:38.643Z",
     userId: "1",
   },
   {
-    id: 1676444762544,
+    id: "1676444762544",
     text: "진짜 신기하다!!",
     createdAt: "2023-02-15T07:06:02.544Z",
     userId: "2",
   },
   {
-    id: 1676444762546,
+    id: "1676444762546",
     text: "이게 뭔데??",
     createdAt: "2023-02-15T07:06:02.544Z",
     userId: "2",
@@ -53,7 +53,7 @@ export const getById = async (id) => {
 
 export const create = async (userId, text) => {
   const newTweet = {
-    id: Date.now(),
+    id: Date.now().toString(),
     text,
     createdAt: new Date().toISOString(),
     userId,
@@ -63,12 +63,14 @@ export const create = async (userId, text) => {
 };
 
 export const update = async (id, text) => {
-  const targetIndex = tweets.findIndex((tweet) => tweet.id.toString() === id);
+  const targetIndex = tweets.findIndex(
+    (tweet) => tweet.id.toString() === id.toString()
+  );
   if (targetIndex < 0) {
     return null;
   } else {
     const newTweet = {
-      ...tweets.find((tweet) => tweet.id.toString() === id),
+      ...tweets.find((tweet) => tweet.id.toString() === id.toString()),
       text,
     };
     tweets.splice(targetIndex, 1, newTweet);
@@ -76,7 +78,9 @@ export const update = async (id, text) => {
   }
 };
 export const remove = async (id) => {
-  const targetIndex = tweets.findIndex((tweet) => tweet.id.toString() === id);
+  const targetIndex = tweets.findIndex(
+    (tweet) => tweet.id.toString() === id.toString()
+  );
   if (targetIndex < 0) {
     return null;
   } else {
