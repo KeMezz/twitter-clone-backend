@@ -16,7 +16,7 @@ tweetRouter.get("/:id", isAuth, tweetController.getTweet);
 tweetRouter.post(
   "/",
   isAuth,
-  [validateText, validateUserId, findErrors],
+  [validateText, findErrors],
   tweetController.createTweet
 );
 tweetRouter.put(
