@@ -21,6 +21,7 @@ export const users = [
 
 export const create = async (newUser) => {
   users.push(newUser);
+  return newUser;
 };
 
 export const getAllById = async (id) => {
@@ -37,4 +38,8 @@ export const findByUsername = async (username) => {
 
 export const findById = async (id) => {
   return users.find((user) => user.id === id);
+};
+
+export const getNewId = async () => {
+  return (users.length + 1).toString();
 };
