@@ -13,13 +13,14 @@ export const signup = async (req, res) => {
     return res.status(409).json({ message: `${username} already exists` });
   }
   const hashed = await bcrypt.hash(password, bcryptSaltRounds);
-  const userId = await usersRepository.create({
+  const user = await usersRepository.create({
+    id: await usersRepository.getNewId(),
     username,
     password: hashed,
     url,
   });
-  const token = createJwtToken(userId);
-  res.status(201).json({ token, username });
+  const token = createJwtToken(user.id);
+  res.status(201).json({ token, username, userId: user.id });
 };
 
 export const login = async (req, res) => {
@@ -33,7 +34,7 @@ export const login = async (req, res) => {
     return res.status(401).json({ message: "Invalid user or password" });
   }
   const token = createJwtToken(user.id);
-  res.status(200).json({ token, username });
+  res.status(200).json({ token, username, userId: user.id });
 };
 
 export const me = async (req, res) => {
