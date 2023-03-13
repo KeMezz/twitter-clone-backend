@@ -28,7 +28,7 @@ export const getAll = async () => {
       if (!user) {
         return null;
       }
-      return { ...tweet, ...user };
+      return { ...tweet, username: user.username, url: user.url };
     })
   );
 };
