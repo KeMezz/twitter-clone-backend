@@ -5,8 +5,6 @@ import {
   findErrors,
   validateId,
   validateText,
-  validateUserId,
-  validateUsername,
 } from "../middleware/validator.js";
 
 const tweetRouter = express.Router();
