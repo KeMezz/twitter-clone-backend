@@ -37,7 +37,7 @@ export const updateTweet = async (req, res) => {
   if (tweet) {
     res.status(201).send(await tweetRepository.update(id, text));
   } else if (userId !== tweet.userId) {
-    res.status(401).json(`can't update other person's tweet`);
+    res.status(403).json(`can't update other person's tweet`);
   } else {
     res.status(404).send(`tweet id ${id} not found`);
   }
@@ -50,7 +50,7 @@ export const removeTweet = async (req, res) => {
   if (tweet) {
     res.sendStatus(204);
   } else if (userId !== tweet.userId) {
-    res.status(401).json(`can't delete other person's tweet`);
+    res.status(403).json(`can't delete other person's tweet`);
   } else {
     res.status(404).send(`tweet id ${id} is not found.`);
   }
