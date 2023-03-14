@@ -26,7 +26,7 @@ export const createTweet = async (req, res) => {
   if (tweet) {
     res.status(201).send(tweet);
   } else {
-    res.status(404).send(`username and text are both needed`);
+    res.status(404).send(`can't create tweet properly`);
   }
 };
 
