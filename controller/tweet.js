@@ -35,7 +35,7 @@ export const updateTweet = async (req, res) => {
   const { id, text } = req.body;
   const tweet = await tweetRepository.update(id, text);
   if (tweet) {
-    res.status(201).send(await tweetRepository.update(id, text));
+    res.status(201).send(tweet);
   } else if (userId !== tweet.userId) {
     res.status(403).json(`can't update other person's tweet`);
   } else {
