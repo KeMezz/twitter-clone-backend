@@ -5,6 +5,7 @@ import helmet from "helmet";
 import tweetRouter from "./routers/tweet.js";
 import "express-async-errors";
 import authRouter from "./routers/auth.js";
+import { config } from "./config.js";
 
 const app = express();
 
@@ -33,4 +34,4 @@ app.use((error, _, res) => {
   res.sendStatus(500);
 });
 
-app.listen(8080);
+app.listen(config.host.port);
