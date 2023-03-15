@@ -6,7 +6,7 @@ import tweetRouter from "./routers/tweet.js";
 import "express-async-errors";
 import authRouter from "./routers/auth.js";
 import { config } from "./config.js";
-import { Server } from "socket.io";
+import { initSocket } from "./connection/socket.js";
 
 const app = express();
 
@@ -36,14 +36,4 @@ app.use((error, _, res) => {
 });
 
 const server = app.listen(config.host.port);
-export const socketIO = new Server(server, {
-  cors: {
-    origin: ["http://localhost:3000"],
-    optionsSuccessStatus: 200,
-    credentials: true,
-  },
-});
-
-socketIO.on("connection", (socket) => {
-  console.log("Client is here!");
-});
+initSocket(server);
