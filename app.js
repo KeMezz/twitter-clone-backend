@@ -7,6 +7,7 @@ import "express-async-errors";
 import authRouter from "./routers/auth.js";
 import { config } from "./config.js";
 import { initSocket } from "./connection/socket.js";
+import { db } from "./db/database.js";
 
 const app = express();
 
@@ -34,6 +35,10 @@ app.use((error, _, res) => {
   console.error(error);
   res.sendStatus(500);
 });
+
+db.getConnection()
+  .then((connection) => console.log(connection))
+  .catch(console.error);
 
 const server = app.listen(config.host.port);
 initSocket(server);
