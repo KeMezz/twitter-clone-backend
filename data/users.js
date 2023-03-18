@@ -1,45 +1,31 @@
-export const users = [
-  {
-    id: "1",
-    username: "hyeongjin",
-    password: "$2b$10$1qNZOLvPWHc7BYtO20UWCuzIzqmfqRchnh0XdJsNzeoA.EjUJKYna",
-    url: "",
-  },
-  {
-    id: "2",
-    username: "bob",
-    password: "$2b$10$DViy9oZJvmecy.I1MCCiZeWSkMIVLfWEsH770BNevxS7OtGJmADpO",
-    url: "",
-  },
-  {
-    id: "3",
-    username: "ellie",
-    password: "$2b$10$75HaC6avTpw/cJDSwjalQuxMir/R1L9v9QiRBtv8FO1vDwJXntFBe",
-    url: "",
-  },
-];
+import { db } from "../db/database.js";
 
-export const create = async (newUser) => {
-  users.push(newUser);
-  return newUser;
-};
-
-export const getAllById = async (id) => {
-  return users.filter((user) => user.id === id);
-};
-
-export const getById = async (id) => {
-  return users.find((user) => user.id === id);
+export const create = async (user) => {
+  const { username, password, url } = user;
+  return db
+    .execute("INSERT INTO users (username, password, url) VALUES (?,?,?)", [
+      username,
+      password,
+      url,
+    ])
+    .then((result) => {
+      return result[0].insertId;
+    })
+    .catch(console.error);
 };
 
 export const findByUsername = async (username) => {
-  return users.find((user) => user.username === username);
+  return db
+    .execute("SELECT * FROM users WHERE username=?", [username])
+    .then((result) => {
+      return result[0][0];
+    });
 };
 
 export const findById = async (id) => {
-  return users.find((user) => user.id === id);
-};
-
-export const getNewId = async () => {
-  return (users.length + 1).toString();
+  return db
+    .execute("SELECT * FROM users WHERE id=?", [parseInt(id)])
+    .then((result) => {
+      return result[0][0];
+    });
 };
