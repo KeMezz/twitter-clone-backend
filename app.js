@@ -36,10 +36,6 @@ app.use((error, _, res) => {
   res.sendStatus(500);
 });
 
-// db.getConnection()
-//   .then(() => console.log("MySQL DB Connected!"))
-//   .catch(console.error);
-
 sequelize.sync().then(() => {
   const server = app.listen(config.host.port);
   initSocket(server);
