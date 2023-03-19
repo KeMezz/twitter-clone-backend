@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { config } from "../config.js";
 
+const loginError = { message: "Invalid user or password" };
+
 export const signup = async (req, res) => {
   const { username, password, url } = req.body;
   const found = await usersRepository.findByUsername(username);
@@ -16,18 +18,18 @@ export const signup = async (req, res) => {
     url,
   });
   const token = createJwtToken(user);
-  res.status(201).json({ token, username, url: user.url });
+  res.status(201).json({ token, username, url });
 };
 
 export const login = async (req, res) => {
   const { username, password } = req.body;
   const user = await usersRepository.findByUsername(username);
   if (!user) {
-    return res.status(401).json({ message: "Invalid user or password" });
+    return res.status(401).json(loginError);
   }
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    return res.status(401).json({ message: "Invalid user or password" });
+    return res.status(401).json(loginError);
   }
   const token = createJwtToken(user.id);
   res.status(200).json({ token, username, userId: user.id, url: user.url });
