@@ -11,13 +11,12 @@ export const signup = async (req, res) => {
   }
   const hashed = await bcrypt.hash(password, config.bcrypt.saltRounds);
   const user = await usersRepository.create({
-    id: await usersRepository.getNewId(),
     username,
     password: hashed,
     url,
   });
-  const token = createJwtToken(user.id);
-  res.status(201).json({ token, username, userId: user.id, url: user.url });
+  const token = createJwtToken(user);
+  res.status(201).json({ token, username, url: user.url });
 };
 
 export const login = async (req, res) => {

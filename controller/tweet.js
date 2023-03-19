@@ -28,6 +28,7 @@ export const createTweet = async (req, res) => {
   if (tweet) {
     res.status(201).send(tweet);
   } else {
+    console.log(tweet);
     res.status(404).send(`can't create tweet properly`);
   }
 };
@@ -37,12 +38,12 @@ export const updateTweet = async (req, res) => {
   const { userId } = req;
   const { id, text } = req.body;
   const tweet = await tweetRepository.update(id, text);
-  if (tweet) {
-    res.status(201).send(tweet);
+  if (!tweet) {
+    res.status(404).send(`tweet id ${id} not found`);
   } else if (userId !== tweet.userId) {
     res.status(403).json(`can't update other person's tweet`);
   } else {
-    res.status(404).send(`tweet id ${id} not found`);
+    res.status(201).send(tweet);
   }
 };
 

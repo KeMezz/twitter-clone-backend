@@ -1,90 +1,49 @@
-import * as userRepository from "./users.js";
+import { db } from "../db/database.js";
 
-export const tweets = [
-  {
-    id: "1676444678643",
-    text: "안녕 반가워 :)",
-    createdAt: "2023-02-15T07:04:38.643Z",
-    userId: "1",
-  },
-  {
-    id: "1676444762544",
-    text: "진짜 신기하다!!",
-    createdAt: "2023-02-15T07:06:02.544Z",
-    userId: "2",
-  },
-  {
-    id: "1676444762546",
-    text: "이게 뭔데??",
-    createdAt: "2023-02-15T07:06:02.544Z",
-    userId: "2",
-  },
-];
+const SELECT_JOIN = `SELECT tw.id, tw.text, tw.createdAt, tw.userId, us.username, us.url FROM tweets as tw JOIN users as us ON tw.userId=us.id`;
+const ORDER_DESC = `ORDER BY tw.createdAt DESC`;
 
 export const getAll = async () => {
-  return Promise.all(
-    tweets.map(async (tweet) => {
-      const user = await userRepository.findById(tweet.userId);
-      if (!user) {
-        return null;
-      }
-      return { ...tweet, username: user.username, url: user.url };
-    })
-  );
+  return db.execute(`${SELECT_JOIN} ${ORDER_DESC}`).then((result) => result[0]);
 };
 
 export const getAllByUserId = async (userId) => {
-  return getAll().then((tweets) =>
-    tweets.filter((tweet) => tweet.userId === userId)
-  );
+  return db
+    .execute(`${SELECT_JOIN} WHERE userId=? ${ORDER_DESC}`, [userId])
+    .then((result) => result[0]);
 };
 
-export const getById = async (id) => {
-  const found = tweets.find((tweet) => tweet.id === id);
-  if (!found) {
-    return null;
-  }
-  const user = await userRepository.findById(found.userId);
-  if (!user) {
-    return null;
-  }
-  return { ...found, ...user };
+export const getById = (id) => {
+  return db
+    .execute(`${SELECT_JOIN} WHERE tw.id=?`, [id])
+    .then((result) => {
+      const tweet = result[0][0];
+      if (!tweet) {
+        return null;
+      }
+      return tweet;
+    })
+    .catch(console.error);
 };
 
-export const create = async (userId, text) => {
-  const newTweet = {
-    id: Date.now().toString(),
-    text,
-    createdAt: new Date().toISOString(),
-    userId,
-  };
-  tweets.splice(0, 0, newTweet);
-  return getById(newTweet.id);
+export const create = (userId, text) => {
+  return db
+    .execute(`INSERT INTO tweets (text, createdAt, userId) VALUES(?,?,?)`, [
+      text,
+      new Date(),
+      userId,
+    ])
+    .then((result) => {
+      return getById(result[0].insertId);
+    })
+    .catch(console.error);
 };
 
 export const update = async (id, text) => {
-  const targetIndex = tweets.findIndex(
-    (tweet) => tweet.id.toString() === id.toString()
-  );
-  if (targetIndex < 0) {
-    return null;
-  } else {
-    const newTweet = {
-      ...tweets.find((tweet) => tweet.id.toString() === id.toString()),
-      text,
-    };
-    tweets.splice(targetIndex, 1, newTweet);
-    return getById(newTweet.id);
-  }
+  return db
+    .execute(`UPDATE tweets SET text=? WHERE id=?`, [text, id])
+    .then(() => getById(id));
 };
 export const remove = async (id) => {
-  const targetIndex = tweets.findIndex(
-    (tweet) => tweet.id.toString() === id.toString()
-  );
-  if (targetIndex < 0) {
-    return null;
-  } else {
-    tweets.splice(targetIndex, 1);
-    return tweets;
-  }
+  return db.execute(`DELETE FROM tweets WHERE id=?`, [id]);
 };

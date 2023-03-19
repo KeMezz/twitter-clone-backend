@@ -37,7 +37,7 @@ app.use((error, _, res) => {
 });
 
 db.getConnection()
-  .then((connection) => console.log(connection))
+  .then(() => console.log("MySQL DB Connected!"))
   .catch(console.error);
 
 const server = app.listen(config.host.port);
