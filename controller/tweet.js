@@ -52,11 +52,11 @@ export const removeTweet = async (req, res) => {
   const { userId } = req;
   const { id } = req.body;
   const tweet = await tweetRepository.remove(id);
-  if (tweet) {
-    res.sendStatus(204);
+  if (!tweet) {
+    res.status(404).send(`tweet id ${id} is not found.`);
   } else if (userId !== tweet.userId) {
     res.status(403).json(`can't delete other person's tweet`);
   } else {
-    res.status(404).send(`tweet id ${id} is not found.`);
+    res.sendStatus(204);
   }
 };
