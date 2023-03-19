@@ -7,7 +7,7 @@ import "express-async-errors";
 import authRouter from "./routers/auth.js";
 import { config } from "./config.js";
 import { initSocket } from "./connection/socket.js";
-import { db } from "./db/database.js";
+import { sequelize } from "./db/database.js";
 
 const app = express();
 
@@ -36,9 +36,7 @@ app.use((error, _, res) => {
   res.sendStatus(500);
 });
 
-db.getConnection()
-  .then(() => console.log("MySQL DB Connected!"))
-  .catch(console.error);
-
-const server = app.listen(config.host.port);
-initSocket(server);
+sequelize.sync().then(() => {
+  const server = app.listen(config.host.port);
+  initSocket(server);
+});
