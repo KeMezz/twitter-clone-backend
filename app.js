@@ -7,7 +7,7 @@ import "express-async-errors";
 import authRouter from "./routers/auth.js";
 import { config } from "./config.js";
 import { initSocket } from "./connection/socket.js";
-import { sequelize } from "./db/database.js";
+import { connectDB } from "./db/database.js";
 
 const app = express();
 
@@ -36,7 +36,10 @@ app.use((error, _, res) => {
   res.sendStatus(500);
 });
 
-sequelize.sync().then(() => {
-  const server = app.listen(config.host.port);
-  initSocket(server);
-});
+connectDB()
+  .then((db) => {
+    console.log("mongodb init!", db);
+    const server = app.listen(config.host.port);
+    initSocket(server);
+  })
+  .catch(console.error);

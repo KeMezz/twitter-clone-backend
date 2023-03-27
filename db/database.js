@@ -1,10 +1,8 @@
+import MongoDb from "mongodb";
 import { config } from "../config.js";
-import { Sequelize } from "sequelize";
 
-const { database, user, password, host, port } = config.db;
-
-export const sequelize = new Sequelize(database, user, password, {
-  host,
-  port,
-  dialect: "mysql",
-});
+export async function connectDB() {
+  return MongoDb.MongoClient.connect(config.db.host).then((client) =>
+    client.db()
+  );
+}
