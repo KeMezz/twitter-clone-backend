@@ -1,35 +1,26 @@
-// import { DataTypes } from "sequelize";
-// import { sequelize } from "../db/database.js";
+import { ObjectId } from "mongodb";
+import { getUsers } from "../db/database.js";
 
-// export const User = sequelize.define("users", {
-//   id: {
-//     type: DataTypes.INTEGER,
-//     autoIncrement: true,
-//     primaryKey: true,
-//     allowNull: false,
-//   },
-//   username: {
-//     type: DataTypes.STRING(45),
-//     allowNull: false,
-//   },
-//   password: {
-//     type: DataTypes.STRING(128),
-//     allowNull: false,
-//   },
-//   url: {
-//     type: DataTypes.TEXT,
-//     allowNull: true,
-//   },
-// });
+export const create = async (user) => {
+  return getUsers()
+    .insertOne(user)
+    .then((data) => data.insertedId.toString());
+};
 
-// export const create = async (user) => {
-//   return User.create(user).then(({ dataValues }) => dataValues.id);
-// };
+export const findByUsername = async (username) => {
+  return getUsers().findOne({ username }).then(mapOptionalUser);
+};
 
-// export const findByUsername = async (username) => {
-//   return User.findOne({ where: { username } });
-// };
+export const findById = async (id) => {
+  return getUsers()
+    .findOne({ _id: new ObjectId(id) })
+    .then(mapOptionalUser);
+};
 
-// export const findById = async (id) => {
-//   return User.findByPk(id);
-// };
+function mapOptionalUser(user) {
+  if (user) {
+    return { ...user, id: user._id };
+  } else {
+    return null;
+  }
+}
