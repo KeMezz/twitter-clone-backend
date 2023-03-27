@@ -37,8 +37,8 @@ app.use((error, _, res) => {
 });
 
 connectDB()
-  .then((db) => {
-    console.log("mongodb init!", db);
+  .then(() => {
+    console.log("mongodb connected!");
     const server = app.listen(config.host.port);
     initSocket(server);
   })
