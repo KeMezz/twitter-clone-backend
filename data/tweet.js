@@ -1,79 +1,68 @@
-// import { Sequelize, DataTypes } from "sequelize";
-// import { sequelize } from "../db/database.js";
-// import { User } from "./users.js";
+import { ObjectId } from "mongodb";
+import { getTweets } from "../db/database.js";
+import * as userRepository from "./users.js";
 
-// const Tweet = sequelize.define("tweets", {
-//   id: {
-//     type: DataTypes.INTEGER,
-//     autoIncrement: true,
-//     primaryKey: true,
-//     allowNull: false,
-//   },
-//   text: {
-//     type: DataTypes.TEXT,
-//     allowNull: false,
-//   },
-// });
-// Tweet.belongsTo(User);
+export const getAll = async () => {
+  return getTweets().find().sort({ createdAt: -1 }).toArray().then(mapTweets);
+};
 
-// const INCLUDE_USER = {
-//   attributes: [
-//     "id",
-//     "text",
-//     "createdAt",
-//     "userId",
-//     [Sequelize.col("user.username"), "username"],
-//     [Sequelize.col("user.url"), "url"],
-//   ],
-//   include: {
-//     model: User,
-//     attributes: [],
-//   },
-// };
-// const ORDER_DESC = { order: [["createdAt", "DESC"]] };
+export const getAllByUserId = async (userId) => {
+  return getTweets()
+    .find({ userId })
+    .sort({ createdAt: -1 })
+    .toArray()
+    .then(mapTweets);
+};
 
-// export const getAll = async () => {
-//   return Tweet.findAll({
-//     ...INCLUDE_USER,
-//     ...ORDER_DESC,
-//   });
-// };
+export const getById = (id) => {
+  return getTweets()
+    .findOne({ _id: new ObjectId(id) })
+    .then(mapOptionalTweet);
+};
 
-// export const getAllByUserId = async (userId) => {
-//   return Tweet.findAll({
-//     ...INCLUDE_USER,
-//     ...ORDER_DESC,
-//     include: {
-//       ...INCLUDE_USER.include,
-//       where: { userId },
-//     },
-//   });
-// };
+export const create = async (userId, text) => {
+  const { username, url } = await userRepository.findById(userId);
+  const tweet = {
+    text,
+    createdAt: new Date(),
+    userId,
+    username,
+    url,
+  };
+  return getTweets()
+    .insertOne(tweet)
+    .then((data) => mapOptionalTweet({ ...tweet, _id: data.insertedId }));
+};
 
-// export const getById = (id) => {
-//   return Tweet.findOne({ where: { id }, ...INCLUDE_USER });
-// };
+export const update = async (id, text) => {
+  return getTweets()
+    .findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: { text } },
+      { returnDocument: "after" } // 수정이 된 다음의 객체를 리턴 받기 위해 명시가 필요함.
+    )
+    .then((result) => result.value)
+    .then(mapOptionalTweet);
+};
 
-// export const create = async (userId, text) => {
-//   return Tweet.create({ text, userId }).then((data) =>
-//     getById(data.dataValues.id)
-//   );
-// };
+export const remove = async (id) => {
+  return getTweets()
+    .findOneAndDelete({ _id: new ObjectId(id) })
+    .then((result) => result.value);
+};
 
-// export const update = async (id, text) => {
-//   return Tweet.findByPk(id, INCLUDE_USER).then((tweet) => {
-//     tweet.text = text;
-//     return tweet.save();
-//   });
-// };
+function mapOptionalTweet(tweet) {
+  if (tweet) {
+    return { ...tweet, id: tweet._id.toString() };
+  } else {
+    return tweet;
+  }
+}
 
-// export const remove = async (id) => {
-//   return Tweet.findByPk(id, INCLUDE_USER)
-//     .then((tweet) => {
-//       if (tweet) {
-//         tweet.destroy();
-//       }
-//       return tweet;
-//     })
-//     .catch(console.error);
-// };
+function mapTweets(tweets) {
+  if (tweets) {
+    return tweets.map(mapOptionalTweet);
+  } else {
+    return tweets;
+  }
+}

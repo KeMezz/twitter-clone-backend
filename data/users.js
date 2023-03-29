@@ -19,7 +19,7 @@ export const findById = async (id) => {
 
 function mapOptionalUser(user) {
   if (user) {
-    return { ...user, id: user._id };
+    return { ...user, id: user._id.toString() };
   } else {
     return null;
   }
