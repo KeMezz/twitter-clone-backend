@@ -20,7 +20,7 @@ export const validateText = body("text")
   .withMessage("트윗 내용은 120자를 넘을 수 없습니다.");
 
 export const validateId = body("id")
-  .isNumeric()
+  .exists()
   .withMessage("ID 형식이 올바르지 않습니다.");
 
 export const validateUserId = body("userId")

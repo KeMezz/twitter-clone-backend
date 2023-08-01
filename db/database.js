@@ -1,10 +1,18 @@
+import { MongoClient } from "mongodb";
 import { config } from "../config.js";
-import { Sequelize } from "sequelize";
 
-const { database, user, password, host, port } = config.db;
+let db;
+const client = new MongoClient(config.db.host);
 
-export const sequelize = new Sequelize(database, user, password, {
-  host,
-  port,
-  dialect: "mysql",
-});
+export async function connectDB() {
+  db = client.db("twiter_clone");
+  return db;
+}
+
+export function getUsers() {
+  return db.collection("users");
+}
+
+export function getTweets() {
+  return db.collection("tweets");
+}
