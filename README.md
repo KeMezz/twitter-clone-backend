@@ -1,3 +1,24 @@
-# Backend of Twitter Clone Project (Express.js)
+<p align="center">
+  <img alt="box" src="https://cdn-icons-png.flaticon.com/512/1409/1409937.png" width="60" />
+</p>
+<h1 align="center">
+  심플 트위터 클론 (백엔드)
+</h1>
 
-React와 Express를 이용한 트위터 클론 프로젝트입니다. 본 레포지토리는 프로젝트의 백엔드 부분을 다룹니다.
+<div align="center">
+  <img alt="screenshot" src="./src/screenshots/1.png" />
+</div>
+
+## 👻 소개
+
+심플한 트위터 클론 프로젝트입니다. Node.js 기반의 기초적인 백엔드 기술을 활용하여 계정 생성과 트윗에 대한 CRUD 기능을 구현하였습니다.
+
+## 🔧 주요 기술
+
+- JavaScript
+- Express
+- MongoDB
+
+## 🚀 배포
+
+MongoDB Atlas
