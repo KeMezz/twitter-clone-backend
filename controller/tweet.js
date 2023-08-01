@@ -2,9 +2,9 @@ import { getSocket } from "../connection/socket.js";
 import * as tweetRepository from "../data/tweet.js";
 
 export const getTweets = async (req, res) => {
-  const { userId } = req.query;
-  if (userId) {
-    res.status(200).send(await tweetRepository.getAllByUserId(userId));
+  const { username } = req.query;
+  if (username) {
+    res.status(200).send(await tweetRepository.getAllByUsername(username));
   } else {
     res.status(200).send(await tweetRepository.getAll());
   }

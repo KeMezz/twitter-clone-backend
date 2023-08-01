@@ -10,7 +10,7 @@ import {
 const tweetRouter = express.Router();
 
 tweetRouter.get("/", isAuth, tweetController.getTweets);
-tweetRouter.get("/:id", isAuth, tweetController.getTweet);
+tweetRouter.get("/:username", isAuth, tweetController.getTweet);
 tweetRouter.post(
   "/",
   isAuth,
