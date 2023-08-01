@@ -68,7 +68,10 @@ connectDB()
       const server = https.createServer(option, app).listen(config.host.port);
       initSocket(server);
     } catch (error) {
-      console.error("https 연결 오류 발생, http 서버로 연결을 시도합니다.");
+      console.error(
+        error,
+        "https 연결 오류 발생, http 서버로 연결을 시도합니다."
+      );
       const server = app.listen(config.host.port);
       initSocket(server);
     }
