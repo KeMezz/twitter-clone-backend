@@ -14,6 +14,14 @@ export const getAllByUserId = async (userId) => {
     .then(mapTweets);
 };
 
+export const getAllByUsername = async (username) => {
+  return getTweets()
+    .find({ username })
+    .sort({ createdAt: -1 })
+    .toArray()
+    .then(mapTweets);
+};
+
 export const getById = (id) => {
   return getTweets()
     .findOne({ _id: new ObjectId(id) })
