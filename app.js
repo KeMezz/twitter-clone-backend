@@ -21,10 +21,7 @@ app.use(helmet());
 app.use(morgan("tiny"));
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://kemezz.github.io/twitter-clone-frontend/*",
-    ],
+    origin: ["http://localhost:3000", "https://kemezz.github.io"],
     optionsSuccessStatus: 200,
     credentials: true,
   })
