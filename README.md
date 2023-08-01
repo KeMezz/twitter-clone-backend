@@ -22,3 +22,7 @@
 ## 🚀 배포
 
 MongoDB Atlas
+
+## 🔗 링크
+
+[트위터 클론 프론트엔드 레포지터리](https://github.com/KeMezz/twitter-clone-frontend)
