@@ -8,6 +8,9 @@ import { config } from "./config.js";
 import { initSocket } from "./connection/socket.js";
 import { connectDB } from "./db/database.js";
 import https from "https";
+import fs from "fs";
+import path from "path";
+import process from "process";
 import "express-async-errors";
 
 const app = express();
